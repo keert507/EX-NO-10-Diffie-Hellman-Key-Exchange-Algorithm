@@ -20,10 +20,65 @@ To Implement Diffie Hellman Key Exchange Algorithm
 
 ## Program:
 
+```
 
+#include <stdio.h>
+
+long long power(long long base, long long exp, long long mod)
+{
+    long long result = 1;
+    base = base % mod;
+    while (exp > 0)
+    {
+        if (exp % 2 == 1)
+            result = (result * base) % mod;
+        base = (base * base) % mod;
+        exp = exp / 2;
+    }
+    return result;
+}
+
+int main()
+{
+    long long p, g, a, b, A, B, secretAlice, secretBob;
+
+    /
+    printf("Enter a prime number (p): ");
+    scanf("%lld", &p);
+    printf("Enter a primitive root of p (g): ");
+    scanf("%lld", &g);
+
+
+    printf("Enter Alice's private key (a): ");
+    scanf("%lld", &a);
+    printf("Enter Bob's private key (b): ");
+    scanf("%lld", &b);
+
+    /* Public keys */
+    A = power(g, a, p);   /* A = g^a mod p */
+    B = power(g, b, p);   /* B = g^b mod p */
+
+    /* Shared secret key */
+    secretAlice = power(B, a, p);   /* B^a mod p */
+    secretBob = power(A, b, p);     /* A^b mod p */
+
+    printf("\nAlice's public key: %lld\n", A);
+    printf("Bob's public key: %lld\n", B);
+    printf("Secret key computed by Alice: %lld\n", secretAlice);
+    printf("Secret key computed by Bob: %lld\n", secretBob);
+
+    if (secretAlice == secretBob)
+        printf("Key exchange successful. Shared secret key = %lld\n", secretAlice);
+    else
+        printf("Key exchange failed.\n");
+
+    return 0;
+}
+```
 
 ## Output:
 
+<img width="555" height="435" alt="image" src="https://github.com/user-attachments/assets/92584864-1bc3-46eb-8e36-8367fe4ad9be" />
 
 
 ## Result:
